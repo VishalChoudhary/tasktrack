@@ -22,6 +22,10 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+//Attach authentication routes under the /api/auth base path
+const authRoutes = require("./routes/authRoutes");
+app.use("/api/auth", authRoutes);
+
 //Error Handling Middleware
 app.use((err, req, res, next) => {
   console.log("Error", err);
