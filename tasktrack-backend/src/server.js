@@ -4,6 +4,11 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/database");
 
+// routes import
+const authRoutes = require("./routes/authRoutes");
+const taskRoutes = require("./routes/taskRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
+
 const app = express();
 
 connectDB(); //Connecting to MongoDB
@@ -22,13 +27,9 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-//Attach authentication routes under the /api/auth base path
-const authRoutes = require("./routes/authRoutes");
 app.use("/api/auth", authRoutes);
-
-// Task routes
-const taskRoutes = require("./routes/taskRoutes");
 app.use("/api/tasks", taskRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 //Error Handling Middleware
 app.use((err, req, res, next) => {
