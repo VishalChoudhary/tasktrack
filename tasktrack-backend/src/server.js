@@ -26,6 +26,10 @@ app.get("/api/health", (req, res) => {
 const authRoutes = require("./routes/authRoutes");
 app.use("/api/auth", authRoutes);
 
+// Task routes
+const taskRoutes = require("./routes/taskRoutes");
+app.use("/api/tasks", taskRoutes);
+
 //Error Handling Middleware
 app.use((err, req, res, next) => {
   console.log("Error", err);

@@ -8,12 +8,12 @@ const taskSchema = mongoose.Schema(
       required: true,
       trim: true,
       minLength: [3, "Title must be atleast 3 characters"],
-      maxLenght: [100, "Title cannot exceed 100 characters"],
+      maxLength: [100, "Title cannot exceed 100 characters"],
     },
     description: {
       type: String,
       trim: true,
-      maxLenght: [500, "Description cannot exceed 500 characters"],
+      maxLength: [500, "Description cannot exceed 500 characters"],
       default: "",
     },
     // ========== STATUS FIELD ==========
