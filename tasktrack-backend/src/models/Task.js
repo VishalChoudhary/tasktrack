@@ -63,6 +63,43 @@ const taskSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+
+    // Subtasks Schema
+    subtasks: [
+      {
+        _id: mongoose.Schema.Types.ObjectId, // Unique ID for subtask
+        title: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        completed: {
+          type: Boolean,
+          default: false,
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now(),
+        },
+        completedAt: {
+          type: Date,
+          default: null,
+        },
+      },
+    ],
+
+    // Metadata for dashboard
+    subtasksCompleted: {
+      // Number of subtasks completed
+      type: Number,
+      default: 0,
+    },
+
+    subtasksTotal: {
+      // Total subtasks
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true, // ← Auto-update updatedAt
@@ -72,6 +109,12 @@ const taskSchema = mongoose.Schema(
 //Adding Indexes when querying tasks for a specific user
 taskSchema.index({ userId: 1 });
 taskSchema.index({ dueDate: 1 });
+
+// Add method to update subtask counts
+taskSchema.methods.updateSubtaskCounts = function () {
+  this.subtasksTotal = this.subtasks.length;
+  this.subtasksCompleted = this.subtasks.filter((s) => s.completed).length;
+};
 
 const Task = mongoose.model("Task", taskSchema);
 

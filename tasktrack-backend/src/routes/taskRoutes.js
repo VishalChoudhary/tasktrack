@@ -3,6 +3,8 @@ const router = express.Router();
 
 const authMiddleware = require("../middleware/authMiddleware");
 
+const subtaskRoutes = require("./advancedRoutes");
+
 const {
   createTask,
   getAllTasks,
@@ -22,5 +24,8 @@ router.get("/:id", authMiddleware, getTaskById);
 router.put("/:id", authMiddleware, updateTask);
 // Delete Task
 router.delete("/:id", authMiddleware, deleteTask);
+
+// Mount subtask routes under task routes
+router.use("/:id/subtasks", subtaskRoutes);
 
 module.exports = router;
