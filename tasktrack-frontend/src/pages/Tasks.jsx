@@ -1,3 +1,12 @@
-export default function Tasks() {
-  return <div className="p-4">Tasks Page</div>;
-}
+import React from "react";
+
+const Tasks = () => {
+  return (
+    <div className="">
+      <h1>My Tasks</h1>
+      <p className="">Coming Soon...</p>
+    </div>
+  );
+};
+
+export default Tasks;

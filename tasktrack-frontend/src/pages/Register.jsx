@@ -1,3 +1,12 @@
-export default function Register() {
-  return <div className="p-4">Register Page</div>;
-}
+import React from "react";
+import RegisterForm from "../components/Auth/RegisterForm";
+
+const Register = () => {
+  return (
+    <div>
+      <RegisterForm />
+    </div>
+  );
+};
+
+export default Register;

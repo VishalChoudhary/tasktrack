@@ -1,3 +1,12 @@
-export default function Login() {
-  return <div className="p-4">Login Page</div>;
-}
+import React from "react";
+import LoginForm from "../components/Auth/LoginForm";
+
+const Login = () => {
+  return (
+    <div>
+      <LoginForm />
+    </div>
+  );
+};
+
+export default Login;

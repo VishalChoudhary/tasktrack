@@ -1,16 +1,27 @@
 import { Navigate, Route, Routes, BrowserRouter } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 
+//Pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
+import Navbar from "./components/Layout/Navbar";
 
+// Protected Route Component
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return <div className="p-4">Loading...</div>;
+    return (
+      <div className="">
+        <div className="">
+          <div className="">
+            <p className="">Loading...</p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (!isAuthenticated) {
@@ -22,32 +33,38 @@ function ProtectedRoute({ children }) {
 
 function AppContent() {
   return (
-    <Routes>
-      {/* Public routes */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+    <div className="">
+      {/* Navbar on all pages */}
+      <Navbar />
 
-      {/* Protected Routes */}
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/tasks"
-        element={
-          <ProtectedRoute>
-            <Tasks />
-          </ProtectedRoute>
-        }
-      />
+      {/* Routes */}
+      <Routes>
+        {/* Public routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-      {/* Default redirect */}
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
-    </Routes>
+        {/* Protected Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tasks"
+          element={
+            <ProtectedRoute>
+              <Tasks />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Default redirect */}
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </div>
   );
 }
 
