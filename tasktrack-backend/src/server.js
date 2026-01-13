@@ -19,6 +19,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// cors setup
+app.use(
+  cors({
+    origin: "http://localhost:5173", // frontend
+    credentials: true,
+  })
+);
+
 //Test Route (verify server is running)
 app.get("/api/health", (req, res) => {
   res.json({
