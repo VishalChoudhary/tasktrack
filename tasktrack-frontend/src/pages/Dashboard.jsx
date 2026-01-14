@@ -97,25 +97,25 @@ const Dashboard = () => {
           label="Total Tasks"
           value={stats.totalTasks || 0}
           color="blue"
-          icon="📊"
+          icon="🗂️"
         />
         <StatCard
           label="To Do"
           value={stats.todoCount || 0}
           color="orange"
-          icon="✓"
+          icon="📝"
         />
         <StatCard
           label="In Progress"
           value={stats.inProgressCount || 0}
           color="yellow"
-          icon="⏳"
+          icon="🔄"
         />
         <StatCard
           label="Done"
           value={stats.doneCount || 0}
           color="green"
-          icon="✅"
+          icon="🎯"
         />
       </div>
 
