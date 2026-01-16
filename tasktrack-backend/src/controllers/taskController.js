@@ -235,7 +235,7 @@ const updateTask = async (req, res) => {
     // Only update fields that were sent in request
     if (req.body.title) task.title = req.body.title.trim();
     if (req.body.description !== undefined)
-      task.description = task.description.trim();
+      task.description = req.body.description.trim();
     if (req.body.status) task.status = req.body.status;
     if (req.body.priority) task.priority = req.body.priority;
     if (req.body.dueDate) task.dueDate = new Date(req.body.dueDate);
