@@ -13,7 +13,7 @@ const TaskList = ({ tasks, onDelete }) => {
           Create your first task to get started
         </p>
         <a
-          href="/tasks/createTask"
+          href="/tasks/create"
           className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded transition"
         >
           ➕ Create First Task
