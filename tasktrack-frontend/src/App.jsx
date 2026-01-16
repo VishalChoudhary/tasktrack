@@ -7,6 +7,8 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
 import Navbar from "./components/Layout/Navbar";
+import CreateTask from "./pages/Tasks/CreateTask";
+import EditTask from "./pages/Tasks/EditTask";
 
 // Protected Route Component
 function ProtectedRoute({ children }) {
@@ -57,6 +59,22 @@ function AppContent() {
           element={
             <ProtectedRoute>
               <Tasks />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tasks/create"
+          element={
+            <ProtectedRoute>
+              <CreateTask />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tasks/:id/edit"
+          element={
+            <ProtectedRoute>
+              <EditTask />
             </ProtectedRoute>
           }
         />

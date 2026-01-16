@@ -99,14 +99,27 @@ const TaskCard = ({ task }) => {
           📅 {formatDate(task.dueDate)}
         </span>
 
-        {/* Delete Button */}
-        <button
-          className="text-red-500 hover:text-red-700 text-sm font-medium transition"
-          title="Delete Task"
-          disabled
-        >
-          🗑️ Delete
-        </button>
+        {/* Edit & Delete Buttons */}
+        <div className="flex gap-2">
+          <a
+            href={`/tasks/${task._id || task.id}/edit`}
+            className="text-indigo-500 hover:text-indigo-700 text-sm font-medium transition"
+            title="Edit task"
+          >
+            ✏️ Edit
+          </a>
+          <button
+            onClick={() => {
+              if (window.confirm(`Delete "${task.title}"?`)) {
+                // TODO: Call delete API
+              }
+            }}
+            className="text-red-500 hover:text-red-700 text-sm font-medium transition"
+            title="Delete task"
+          >
+            🗑️ Delete
+          </button>
+        </div>
       </div>
     </div>
   );

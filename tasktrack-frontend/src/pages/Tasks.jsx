@@ -65,13 +65,20 @@ const Tasks = () => {
               {status === "all"
                 ? "🗂️ All"
                 : status === "todo"
-                ? "📝 To Do"
-                : status === "in-progress"
-                ? "🔄 In Progress"
-                : "🎯 Done"}
+                  ? "📝 To Do"
+                  : status === "in-progress"
+                    ? "🔄 In Progress"
+                    : "🎯 Done"}
             </button>
           ))}
         </div>
+        {/* Create Task Button */}
+        <a
+          href="/tasks/create"
+          className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 mt-2 rounded-lg transition mb-6"
+        >
+          ➕ Create New Task
+        </a>
       </div>
 
       {/* Error State */}
