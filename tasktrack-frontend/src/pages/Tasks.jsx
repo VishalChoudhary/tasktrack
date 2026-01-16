@@ -33,6 +33,13 @@ const Tasks = () => {
     }
   };
 
+  const handleTaskDeleted = (deleteId) => {
+    console.log("Deleting task: ", deleteId);
+    setTasks((prevTasks) =>
+      prevTasks.filter((t) => t._id !== deleteId && t.id !== deleteId),
+    );
+  };
+
   // Loading state
   if (loading) {
     return (
@@ -104,7 +111,7 @@ const Tasks = () => {
       )}
 
       {/* Task List */}
-      <TaskList tasks={tasks} />
+      <TaskList tasks={tasks} onDelete={handleTaskDeleted} />
     </div>
   );
 };
