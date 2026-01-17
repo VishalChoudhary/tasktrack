@@ -6,6 +6,7 @@ const {
   getSubtasks,
   toggleSubtask,
   deleteSubtask,
+  updateSubtask,
 } = require("../controllers/advancedController");
 
 // all protected routes
@@ -15,8 +16,10 @@ router.post("/", addSubtask);
 
 router.get("/", getSubtasks);
 
-router.put("/:subtaskId", toggleSubtask);
+router.patch("/:subtaskId", toggleSubtask);
 
 router.delete("/:subtaskId", deleteSubtask);
+
+router.put("/:subtaskId", updateSubtask);
 
 module.exports = router;

@@ -212,9 +212,62 @@ const deleteSubtask = async (req, res) => {
   }
 };
 
+// UPDATE /api/tasks/:id/subtasks/:subtaskId
+const updateSubtask = async (req, res) => {
+  try {
+    const { id, subtaskId } = req.params;
+    const { title } = req.body;
+    const userId = req.user.userId;
+
+    // Validate
+    if (!title || title.trim() === "") {
+      return res.status(400).json({
+        error: "Subtask title is required",
+      });
+    }
+
+    // Find task and verify ownership
+    const task = await Task.findById(id);
+    if (!task) {
+      return res.status(404).json({
+        error: "Task not found",
+      });
+    }
+
+    if (task.userId.toString() !== userId) {
+      return res.status(403).json({
+        error: "Not authorized",
+      });
+    }
+
+    // Find and update subtask
+    const subtask = task.subtasks.id(subtaskId);
+    if (!subtask) {
+      return res.status(404).json({
+        error: "Subtask not found",
+      });
+    }
+
+    subtask.title = title.trim();
+    subtask.updatedAt = new Date();
+    await task.save();
+
+    return res.status(200).json({
+      message: "Subtask updated",
+      subtask: subtask,
+    });
+  } catch (error) {
+    console.error("Update subtask error: ", error);
+    return res.status(500).json({
+      error: "Error updating subtask",
+    });
+  }
+};
+
 module.exports = {
   addSubtask,
   getSubtasks,
   toggleSubtask,
   deleteSubtask,
+  updateSubtask,
 };
