@@ -1,10 +1,22 @@
 import React, { useState } from "react";
 import { taskAPI } from "../../services/api";
 import DeleteConfirmModal from "./DeleteConfirmModal";
+import SubtaskForm from "../Subtasks/SubtaskForm";
+import SubtaskList from "../Subtasks/SubtaskList";
 
 const TaskCard = ({ task, onTaskDeleted }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showSubtaskForm, setShowSubtaskForm] = useState(false);
+  const [subtasks, setSubtasks] = useState(task.subtasks || []);
+  const [expandSubtasks, setExpandSubtasks] = useState(false);
+  const [subtaskCounts, setSubtaskCounts] = useState(() => ({
+    total:
+      (task &&
+        (task.subtasksTotal ?? (task.subtasks ? task.subtasks.length : 0))) ||
+      0,
+    completed: (task && (task.subtasksCompleted ?? 0)) || 0,
+  }));
 
   // Formatting date
   const formatDate = (dateString) => {
@@ -92,6 +104,57 @@ const TaskCard = ({ task, onTaskDeleted }) => {
     }
   };
 
+  // Handle Subtask created
+  const handleSubtaskCreated = async (newSubtask, counts) => {
+    // Fetch latest subtasks from backend to ensure UI is in sync
+    try {
+      const response = await taskAPI.getSubTasks(task._id || task.id);
+      setSubtasks(response.data.subtasks || []);
+    } catch (err) {
+      // fallback: add newSubtask locally if fetch fails
+      setSubtasks([newSubtask, ...subtasks]);
+    }
+    setSubtaskCounts(counts);
+    setShowSubtaskForm(false);
+    setExpandSubtasks(true); // Ensure subtasks section is visible after adding
+  };
+
+  // Handle subtask toggled
+  const handleSubtaskToggle = (subtaskId, completed) => {
+    setSubtasks(
+      subtasks.map((s) => (s._id === subtaskId ? { ...s, completed } : s)),
+    );
+    // Update counts based on new completion status
+    const newCompleted = subtasks.filter((s) =>
+      s._id === subtaskId ? completed : s.completed,
+    ).length;
+    setSubtaskCounts({
+      total: subtasks.length,
+      completed: newCompleted,
+    });
+  };
+
+  // Handle subtask deleted
+  const handleSubtaskDelete = (subtaskId) => {
+    const newSubtasks = subtasks.filter((s) => s._id !== subtaskId);
+    setSubtasks(newSubtasks);
+    // Recalculate counts
+    const newCompleted = newSubtasks.filter((s) => s.completed).length;
+    setSubtaskCounts({
+      total: newSubtasks.length,
+      completed: newCompleted,
+    });
+  };
+
+  // Handle subtask edited
+  const handleSubtaskEdit = (subtaskId, newTitle) => {
+    setSubtasks(
+      subtasks.map((s) =>
+        s._id === subtaskId ? { ...s, title: newTitle } : s,
+      ),
+    );
+  };
+
   return (
     <>
       <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
@@ -120,16 +183,49 @@ const TaskCard = ({ task, onTaskDeleted }) => {
           >
             {getPriorityText()}
           </span>
+
+          {/* Subtask Count Badge */}
+          {subtaskCounts && subtaskCounts.total > 0 && (
+            <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-medium">
+              📋 {subtaskCounts.completed}/{subtaskCounts.total}
+            </span>
+          )}
         </div>
 
-        {/* Footer: Date + Delete Button */}
+        {/* Footer: Date + Action Buttons */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-200">
           <span className="text-xs text-gray-500">
             📅 {formatDate(task.dueDate)}
           </span>
 
           {/* Action Buttons */}
-          <div className="flex gap-3">
+          <div className="flex gap-3 flex-wrap">
+            {/* Subtasks Button */}
+            <button
+              onClick={async () => {
+                if (!expandSubtasks) {
+                  // Fetch latest subtasks from backend when expanding
+                  try {
+                    const response = await taskAPI.getSubTasks(
+                      task._id || task.id,
+                    );
+                    setSubtasks(response.data.subtasks || []);
+                  } catch (err) {
+                    // fallback: keep current subtasks
+                  }
+                }
+                setExpandSubtasks(!expandSubtasks);
+              }}
+              className={`text-sm font-medium transition ${
+                expandSubtasks
+                  ? "text-purple-700 bg-purple-50 px-2 py-1 rounded"
+                  : "text-purple-600 hover:text-purple-700"
+              }`}
+              title="View subtasks"
+            >
+              📋 Subtasks
+            </button>
+
             {/* Edit Button */}
             <a
               href={`/tasks/${task._id || task.id}/edit`}
@@ -143,13 +239,49 @@ const TaskCard = ({ task, onTaskDeleted }) => {
             <button
               onClick={() => setShowDeleteModal(true)}
               disabled={isDeleting}
-              className="text-red-500 hover:text-red-700 text-sm font-medium transition"
+              className="text-red-500 hover:text-red-700 disabled:text-red-300 text-sm font-medium transition"
               title="Delete task"
             >
               🗑️ Delete
             </button>
           </div>
         </div>
+
+        {/* Subtasks Section - Expandable */}
+        {expandSubtasks && (
+          <div className="mt-5 pt-5 border-t border-gray-200">
+            {/* Add Subtask Form */}
+            {showSubtaskForm ? (
+              <SubtaskForm
+                taskId={task._id || task.id}
+                onSubtaskCreated={handleSubtaskCreated}
+                onCancel={() => setShowSubtaskForm(false)}
+              />
+            ) : (
+              <button
+                onClick={() => setShowSubtaskForm(true)}
+                className="w-full mb-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-4 py-2 rounded-lg transition text-sm font-medium"
+              >
+                ➕ Add Subtask
+              </button>
+            )}
+
+            {/* Subtasks List */}
+            {subtasks.length === 0 ? (
+              <div className="text-center py-6 text-gray-500 text-sm">
+                📭 No subtasks yet. Add one to get started!
+              </div>
+            ) : (
+              <SubtaskList
+                subtasks={subtasks}
+                taskId={task._id || task.id}
+                onToggle={handleSubtaskToggle}
+                onDelete={handleSubtaskDelete}
+                onEdit={handleSubtaskEdit}
+              />
+            )}
+          </div>
+        )}
       </div>
 
       {/* Delete Confirmation Modal */}
