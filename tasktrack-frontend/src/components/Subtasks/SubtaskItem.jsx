@@ -19,23 +19,29 @@ const SubtaskItem = ({ subtask, taskId, onToggle, onDelete, onEdit }) => {
         newCompletedStatus,
       );
 
-      if (response.subtask) {
+      if (response.data.subtask) {
         onToggle(subtask._id, newCompletedStatus);
       }
     } catch (err) {
+      // REVERT on error
+      console.error("Error, reverting...");
+      onToggle(subtask._id, subtask.completed);
       alert("Failed to update: " + (err.response?.data?.error || err.message));
-      console.error("Toggle subtask error:", err);
     }
   };
 
-  // Handle save edit
+  // // Handle save edit (Optimistic Update)
   const handleSave = async () => {
-    if (!editTitle.trim()) {
-      alert("Subtask title required");
+    const trimmedTitle = editTitle.trim();
+
+    // Validation
+    if (!trimmedTitle) {
+      alert("Subtask title is required");
+      return;
     }
 
-    if (editTitle === subtask.title) {
-      //No change, just cancel
+    if (trimmedTitle === subtask.title) {
+      // No change, just close
       setIsEditing(false);
       return;
     }
@@ -43,20 +49,31 @@ const SubtaskItem = ({ subtask, taskId, onToggle, onDelete, onEdit }) => {
     try {
       setIsSaving(true);
 
+      // Updating parent state immediately
+      onEdit(subtask._id, trimmedTitle);
+
+      // Closing edit mode immediately
+      setIsEditing(false);
+
+      // Sending API call in background
       const response = await taskAPI.updateSubtask(
         taskId,
         subtask._id,
-        editTitle,
+        trimmedTitle,
       );
 
-      // Backend returns : {message , subtask}
-      if (response.subtask) {
-        onEdit(subtask._id, response.subtask, title);
-        setIsEditing(false);
+      // Check resposnse data
+      if (!response.data?.subtask) {
+        throw new Error("Invalid API response");
       }
     } catch (error) {
-      alert("Failed to save: " + (err.response?.data?.error || err.message));
-      setEditTitle(subtask.title);
+      // REVERT on error
+      console.error("Error, reverting...");
+      onEdit(subtask._id, subtask.title);
+      setIsEditing(true);
+      alert(
+        "Failed to save: " + (error.response?.data?.error || error.message),
+      );
     } finally {
       setIsSaving(false);
     }

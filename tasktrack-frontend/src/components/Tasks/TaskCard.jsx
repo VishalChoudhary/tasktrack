@@ -148,11 +148,13 @@ const TaskCard = ({ task, onTaskDeleted }) => {
 
   // Handle subtask edited
   const handleSubtaskEdit = (subtaskId, newTitle) => {
-    setSubtasks(
-      subtasks.map((s) =>
-        s._id === subtaskId ? { ...s, title: newTitle } : s,
-      ),
+    // Create new array
+    const updatedSubtasks = subtasks.map((s) =>
+      s._id === subtaskId ? { ...s, title: newTitle } : s,
     );
+
+    // Update state
+    setSubtasks(updatedSubtasks);
   };
 
   return (

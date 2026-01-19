@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
-//creating axios instance
+// Creating axios instance
 const api = axios.create({
   baseURL: API_BASE,
   headers: {
@@ -27,9 +27,8 @@ export const authAPI = {
 };
 
 // Task Endpoints
-
 export const taskAPI = {
-  // ---------------- TASKS CRUD ----------------
+  // TASKS CRUD
   createTask: (data) => api.post("/tasks", data),
   getTasks: (params = {}) =>
     api.get("/tasks", { params: { ...params, limit: 1000 } }),
@@ -37,25 +36,18 @@ export const taskAPI = {
   updateTask: (id, data) => api.put(`/tasks/${id}`, data),
   deleteTask: (id) => api.delete(`/tasks/${id}`),
 
-  // ---------------- SUBTASKS ----------------
-
-  // Create subtask
-  addSubtask: (taskId, data) => api.post(`tasks/${taskId}/subtasks`, data),
-  // Get all subtasks for a task
+  // SUBTASKS
+  addSubtask: (taskId, data) => api.post(`/tasks/${taskId}/subtasks`, data),
   getSubTasks: (taskId) => api.get(`/tasks/${taskId}/subtasks`),
-  // Toggle subtask completion (PATCH)
   toggleSubtask: (taskId, subtaskId, completed) =>
     api.patch(`/tasks/${taskId}/subtasks/${subtaskId}`, { completed }),
-  // Update subtask title (PUT)
   updateSubtask: (taskId, subtaskId, title) =>
     api.put(`/tasks/${taskId}/subtasks/${subtaskId}`, { title }),
-  //  Delete subtask
   deleteSubtask: (taskId, subtaskId) =>
     api.delete(`/tasks/${taskId}/subtasks/${subtaskId}`),
 };
 
 // Dashboard Endpoints
-
 export const dashboardAPI = {
   getSummary: () => api.get("/dashboard/summary"),
   getRecentTasks: (limit) =>
