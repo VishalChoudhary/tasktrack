@@ -122,6 +122,8 @@ const getAllTasks = async (req, res) => {
         dueDate: task.dueDate,
         createdAt: task.createdAt,
         updateAt: task.updateAt,
+        subtasksTotal: task.subtasksTotal || 0,
+        subtasksCompleted: task.subtasksCompleted || 0,
       })),
       pagination: {
         page: pageNum,
