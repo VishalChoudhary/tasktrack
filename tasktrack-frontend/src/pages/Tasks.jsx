@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { taskAPI } from "../services/api";
 import TaskList from "../components/Tasks/TaskList";
 
@@ -6,26 +6,41 @@ const Tasks = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filter, setFilter] = useState("all"); //all, todo, in-progress,done
+  const [filter, setFilter] = useState("all");
 
-  // Fetch tasks on component mount
+  // ✅ PAGINATION STATE - SIMPLE
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalTasks, setTotalTasks] = useState(0);
+
+  // Fetch tasks when page or filter changes
   useEffect(() => {
     fetchTasks();
-  }, [filter]);
+  }, [currentPage, filter]);
 
   const fetchTasks = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      // Build query params based on filter
-      const params = filter !== "all" ? { status: filter } : {};
+      // Build params
+      const params = {
+        page: currentPage,
+        limit: 9, // ✅ Fixed: 10 tasks per page
+      };
+
+      if (filter !== "all") {
+        params.status = filter;
+      }
 
       // Call API
       const response = await taskAPI.getTasks(params);
+
       setTasks(response.data.tasks || []);
+      setTotalPages(response.data.pagination.totalPages);
+      setTotalTasks(response.data.pagination.total);
     } catch (err) {
-      const errorMsg = error.response?.data?.error || "Failed to load tasks";
+      const errorMsg = err.response?.data?.error || "Failed to load tasks";
       setError(errorMsg);
       console.log("Tasks error: ", err);
     } finally {
@@ -34,10 +49,22 @@ const Tasks = () => {
   };
 
   const handleTaskDeleted = (deleteId) => {
-    console.log("Deleting task: ", deleteId);
-    setTasks((prevTasks) =>
-      prevTasks.filter((t) => t._id !== deleteId && t.id !== deleteId),
+    // Remove task from UI
+    const updatedTasks = tasks.filter(
+      (t) => t._id !== deleteId && t.id !== deleteId,
     );
+    setTasks(updatedTasks);
+
+    // If last task deleted → go to previous page
+    if (updatedTasks.length === 0 && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+    fetchTasks();
+  };
+
+  const handleFilterChange = (status) => {
+    setFilter(status);
+    setCurrentPage(1); // Reset to page 1
   };
 
   // Loading state
@@ -57,12 +84,13 @@ const Tasks = () => {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-4">📋 My Tasks</h1>
+
         {/* Filter Buttons */}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mb-4">
           {["all", "todo", "in-progress", "done"].map((status) => (
             <button
               key={status}
-              onClick={() => setFilter(status)}
+              onClick={() => handleFilterChange(status)}
               className={`px-4 py-2 rounded-lg transition ${
                 filter === status
                   ? "bg-indigo-600 text-white"
@@ -79,10 +107,11 @@ const Tasks = () => {
             </button>
           ))}
         </div>
+
         {/* Create Task Button */}
         <a
           href="/tasks/create"
-          className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 mt-2 rounded-lg transition mb-6"
+          className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition"
         >
           ➕ Create New Task
         </a>
@@ -102,16 +131,93 @@ const Tasks = () => {
         </div>
       )}
 
-      {/* Task Count Info */}
+      {/* Task Info */}
       {tasks.length > 0 && (
-        <div className="mb-6 text-gray-600">
-          Showing <strong>{tasks.length}</strong> task
-          {tasks.length !== 1 ? "s" : ""}
+        <div className="mb-6 text-gray-700">
+          <p>
+            Showing <strong>{tasks.length}</strong> tasks
+            {filter !== "all" && (
+              <span>
+                {" "}
+                • Filter: <strong>{filter}</strong>
+              </span>
+            )}
+          </p>
         </div>
       )}
 
       {/* Task List */}
-      <TaskList tasks={tasks} onDelete={handleTaskDeleted} />
+      {tasks.length > 0 ? (
+        <>
+          <TaskList tasks={tasks} onDelete={handleTaskDeleted} />
+
+          {/* ✅ SIMPLE PAGINATION */}
+          <div className="mt-12 flex items-center justify-center gap-4">
+            {/* Previous Button */}
+            <button
+              onClick={() => setCurrentPage(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 rounded-lg transition ${
+                currentPage === 1
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  : "bg-indigo-600 text-white hover:bg-indigo-700"
+              }`}
+            >
+              ← Prev
+            </button>
+
+            {/* Page Numbers */}
+            <div className="flex gap-2">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`px-3 py-2 rounded-lg transition ${
+                      currentPage === page
+                        ? "bg-indigo-600 text-white"
+                        : "bg-gray-200 text-gray-700 hover:bg-indigo-100"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ),
+              )}
+            </div>
+
+            {/* Next Button */}
+            <button
+              onClick={() => setCurrentPage(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 rounded-lg transition ${
+                currentPage === totalPages
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  : "bg-indigo-600 text-white hover:bg-indigo-700"
+              }`}
+            >
+              Next →
+            </button>
+          </div>
+
+          {/* Page Info */}
+          <div className="text-center mt-4 text-gray-600 text-sm">
+            Page {currentPage} of {totalPages} • Total: {totalTasks} tasks
+          </div>
+        </>
+      ) : (
+        <div className="text-center py-12">
+          <div className="text-4xl mb-4">📭</div>
+          <h3 className="text-xl font-semibold text-gray-800 mb-2">
+            No tasks found
+          </h3>
+          <a
+            href="/tasks/create"
+            className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded transition"
+          >
+            ➕ Create First Task
+          </a>
+        </div>
+      )}
     </div>
   );
 };

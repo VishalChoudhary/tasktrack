@@ -30,8 +30,14 @@ export const authAPI = {
 export const taskAPI = {
   // TASKS CRUD
   createTask: (data) => api.post("/tasks", data),
-  getTasks: (params = {}) =>
-    api.get("/tasks", { params: { ...params, limit: 1000 } }),
+  getTasks: (params = {}) => {
+    const defaultParams = {
+      page: params.page || 1,
+      limit: params.limit || 9,
+      ...params,
+    };
+    return api.get("/tasks", { params: defaultParams });
+  },
   getTaskById: (id) => api.get(`/tasks/${id}`),
   updateTask: (id, data) => api.put(`/tasks/${id}`, data),
   deleteTask: (id) => api.delete(`/tasks/${id}`),
