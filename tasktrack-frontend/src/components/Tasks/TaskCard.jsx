@@ -201,7 +201,7 @@ const TaskCard = ({ task, onTaskDeleted }) => {
           </span>
 
           {/* Action Buttons */}
-          <div className="flex gap-3 flex-wrap">
+          <div className="flex items-center gap-3">
             {/* Subtasks Button */}
             <button
               onClick={async () => {
