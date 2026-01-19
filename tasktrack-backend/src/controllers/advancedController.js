@@ -101,7 +101,7 @@ const getSubtasks = async (req, res) => {
 };
 
 // TOGGLE SUBTASK COMPLETION
-// PUT /api/tasks/:id/subtasks/:subtaskId
+// PATCH /api/tasks/:id/subtasks/:subtaskId
 
 const toggleSubtask = async (req, res) => {
   try {
@@ -212,7 +212,8 @@ const deleteSubtask = async (req, res) => {
   }
 };
 
-// UPDATE /api/tasks/:id/subtasks/:subtaskId
+// UPDATE
+// PUT /api/tasks/:id/subtasks/:subtaskId
 const updateSubtask = async (req, res) => {
   try {
     const { id, subtaskId } = req.params;
