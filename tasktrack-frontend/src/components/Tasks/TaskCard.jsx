@@ -105,16 +105,30 @@ const TaskCard = ({ task, onTaskDeleted }) => {
   };
 
   // Handle Subtask created
-  const handleSubtaskCreated = async (newSubtask, counts) => {
-    // Fetch latest subtasks from backend to ensure UI is in sync
+  const handleSubtaskCreated = async (newSubtask) => {
     try {
       const response = await taskAPI.getSubTasks(task._id || task.id);
-      setSubtasks(response.data.subtasks || []);
+      const latestSubtasks = response.data.subtasks || [];
+      setSubtasks(latestSubtasks);
+
+      // Take counts from updated subtasks
+      const completed = latestSubtasks.filter((s) => s.completed).length;
+      setSubtaskCounts({
+        total: latestSubtasks.length,
+        completed,
+      });
     } catch (err) {
-      // fallback: add newSubtask locally if fetch fails
-      setSubtasks([newSubtask, ...subtasks]);
+      // fallback: optimistic update
+      const updatedSubtasks = [newSubtask, ...subtasks];
+      setSubtasks(updatedSubtasks);
+
+      const completed = updatedSubtasks.filter((s) => s.completed).length;
+
+      setSubtaskCounts({
+        total: updatedSubtasks.length,
+        completed,
+      });
     }
-    setSubtaskCounts(counts);
     setShowSubtaskForm(false);
     setExpandSubtasks(true); // Ensure subtasks section is visible after adding
   };

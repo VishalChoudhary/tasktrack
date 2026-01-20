@@ -31,7 +31,7 @@ const SubtaskForm = ({ taskId, onSubtaskCreated, onCancel }) => {
       }
 
       // Call parent callback with new subtask
-      onSubtaskCreated(response.subtask, response.counts);
+      onSubtaskCreated(response.subtask);
     } catch (error) {
       setError(error.response?.data?.error || "Failed to create subtask");
       console.error("Create subtask error:", error);
