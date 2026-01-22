@@ -202,14 +202,6 @@ const SubtaskItem = ({ subtask, taskId, onToggle, onDelete, onEdit }) => {
 
             <div className="flex gap-3">
               <button
-                onClick={() => setDeleteSubtaskModal(false)}
-                disabled={isDeleting}
-                className="flex-1 px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition"
-              >
-                Cancel
-              </button>
-
-              <button
                 onClick={async () => {
                   const success = await handleDelete();
                   if (success) setDeleteSubtaskModal(false);
@@ -218,6 +210,13 @@ const SubtaskItem = ({ subtask, taskId, onToggle, onDelete, onEdit }) => {
                 className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:bg-red-400 transition"
               >
                 {isDeleting ? "Deleting..." : "Delete"}
+              </button>
+              <button
+                onClick={() => setDeleteSubtaskModal(false)}
+                disabled={isDeleting}
+                className="flex-1 px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition"
+              >
+                Cancel
               </button>
             </div>
           </div>

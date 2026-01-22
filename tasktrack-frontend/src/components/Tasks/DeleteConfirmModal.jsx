@@ -24,19 +24,19 @@ const DeleteConfirmModal = ({
         {/* Buttons */}
         <div className="flex gap-3">
           <button
-            onClick={onCancel}
-            disabled={isLoading}
-            className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition"
-          >
-            Cancel
-          </button>
-          <button
             onClick={onConfirm}
             disabled={isLoading}
             className="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white font-medium py-2 px-4 rounded-lg transition flex items-center justify-center gap-2"
           >
             {isLoading && <span>🗑️</span>}
             Delete Permenantly
+          </button>
+          <button
+            onClick={onCancel}
+            disabled={isLoading}
+            className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition"
+          >
+            Cancel
           </button>
         </div>
       </div>
