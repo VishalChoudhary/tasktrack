@@ -47,7 +47,7 @@ const Dashboard = () => {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500 mx-auto mb-4">
-            <p className="text-gray-600">Loading your dashboard...</p>
+            {/* <p className="text-gray-600">Loading your dashboard...</p> */}
           </div>
         </div>
       </div>
@@ -193,8 +193,8 @@ const Dashboard = () => {
                       task.status === "done"
                         ? "bg-green-100 text-green-700"
                         : task.status === "in-progress"
-                        ? "bg-yellow-100 text-yellow-700"
-                        : "bg-orange-100 text-orange-700"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-orange-100 text-orange-700"
                     }`}
                   >
                     {task.status}
@@ -206,8 +206,8 @@ const Dashboard = () => {
                       task.priority === "high"
                         ? "bg-red-100 text-red-700"
                         : task.priority === "medium"
-                        ? "bg-yellow-100 text-yellow-700"
-                        : "bg-blue-100 text-blue-700"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-blue-100 text-blue-700"
                     }`}
                   >
                     {task.priority}

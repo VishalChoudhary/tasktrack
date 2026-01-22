@@ -173,14 +173,14 @@ const TaskCard = ({ task, onTaskDeleted }) => {
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
+      <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm hover:shadow-md transition flex flex-col">
         {/* Title */}
-        <h3 className="text-lg font-semibold text-gray-800 mb-2 truncate">
+        <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-1">
           {task.title}
         </h3>
 
         {/* Description */}
-        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+        <p className="text-sm text-gray-600 mb-4 line-clamp-2 min-h-[40px]">
           {task.description || "No description"}
         </p>
 
@@ -209,7 +209,7 @@ const TaskCard = ({ task, onTaskDeleted }) => {
         </div>
 
         {/* Footer: Date + Action Buttons */}
-        <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+        <div className="flex items-center justify-between pt-4 border-t border-gray-200 mt-auto">
           <span className="text-xs text-gray-500">
             📅 {formatDate(task.dueDate)}
           </span>
@@ -264,8 +264,14 @@ const TaskCard = ({ task, onTaskDeleted }) => {
         </div>
 
         {/* Subtasks Section - Expandable */}
-        {expandSubtasks && (
-          <div className="mt-5 pt-5 border-t border-gray-200">
+        <div
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+            expandSubtasks
+              ? "max-h-[1000px] opacity-100 mt-5 pt-5"
+              : "max-h-0 opacity-0"
+          }`}
+        >
+          <div className="border-t border-gray-200">
             {/* Add Subtask Form */}
             {showSubtaskForm ? (
               <SubtaskForm
@@ -288,16 +294,18 @@ const TaskCard = ({ task, onTaskDeleted }) => {
                 📭 No subtasks yet. Add one to get started!
               </div>
             ) : (
-              <SubtaskList
-                subtasks={subtasks}
-                taskId={task._id || task.id}
-                onToggle={handleSubtaskToggle}
-                onDelete={handleSubtaskDelete}
-                onEdit={handleSubtaskEdit}
-              />
+              <div className="max-h-[210px] overflow-y-auto pr-1 scroll-smooth">
+                <SubtaskList
+                  subtasks={subtasks}
+                  taskId={task._id || task.id}
+                  onToggle={handleSubtaskToggle}
+                  onDelete={handleSubtaskDelete}
+                  onEdit={handleSubtaskEdit}
+                />
+              </div>
             )}
           </div>
-        )}
+        </div>
       </div>
 
       {/* Delete Confirmation Modal */}

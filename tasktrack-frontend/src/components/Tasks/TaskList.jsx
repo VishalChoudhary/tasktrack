@@ -23,7 +23,7 @@ const TaskList = ({ tasks, onDelete }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
       {tasks.map((task) => (
         <TaskCard
           key={task._id || task.id}

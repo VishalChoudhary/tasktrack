@@ -8,7 +8,7 @@ const Tasks = () => {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState("all");
 
-  // ✅ PAGINATION STATE - SIMPLE
+  // PAGINATION STATE - SIMPLE
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalTasks, setTotalTasks] = useState(0);
@@ -26,7 +26,7 @@ const Tasks = () => {
       // Build params
       const params = {
         page: currentPage,
-        limit: 9, // ✅ Fixed: 10 tasks per page
+        limit: 9, // 9 tasks per page
       };
 
       if (filter !== "all") {
@@ -80,41 +80,43 @@ const Tasks = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="max-w-6xl mx-auto px-4 py-8 min-h-screen flex flex-col">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-4">📋 My Tasks</h1>
 
-        {/* Filter Buttons */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          {["all", "todo", "in-progress", "done"].map((status) => (
-            <button
-              key={status}
-              onClick={() => handleFilterChange(status)}
-              className={`px-4 py-2 rounded-lg transition ${
-                filter === status
-                  ? "bg-indigo-600 text-white"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-              }`}
-            >
-              {status === "all"
-                ? "🗂️ All"
-                : status === "todo"
-                  ? "📝 To Do"
-                  : status === "in-progress"
-                    ? "🔄 In Progress"
-                    : "🎯 Done"}
-            </button>
-          ))}
-        </div>
+        <div className="flex items-center justify-between gap-4 mb-2">
+          {/* Filter Buttons */}
+          <div className="flex flex-wrap gap-2">
+            {["all", "todo", "in-progress", "done"].map((status) => (
+              <button
+                key={status}
+                onClick={() => handleFilterChange(status)}
+                className={`px-4 py-2 rounded-lg transition ${
+                  filter === status
+                    ? "bg-indigo-600 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+              >
+                {status === "all"
+                  ? "🗂️ All"
+                  : status === "todo"
+                    ? "📝 To Do"
+                    : status === "in-progress"
+                      ? "🔄 In Progress"
+                      : "🎯 Done"}
+              </button>
+            ))}
+          </div>
 
-        {/* Create Task Button */}
-        <a
-          href="/tasks/create"
-          className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition"
-        >
-          ➕ Create New Task
-        </a>
+          {/* Create Task Button */}
+          <a
+            href="/tasks/create"
+            className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition"
+          >
+            ➕ Create New Task
+          </a>
+        </div>
       </div>
 
       {/* Error State */}
@@ -135,11 +137,10 @@ const Tasks = () => {
       {tasks.length > 0 && (
         <div className="mb-6 text-gray-700">
           <p>
-            Showing <strong>{tasks.length}</strong> tasks
             {filter !== "all" && (
               <span>
-                {" "}
-                • Filter: <strong>{filter}</strong>
+                Showing <strong>{tasks.length}</strong> tasks • Filter:{" "}
+                <strong>{filter}</strong>
               </span>
             )}
           </p>
@@ -148,62 +149,65 @@ const Tasks = () => {
 
       {/* Task List */}
       {tasks.length > 0 ? (
-        <>
+        <div className=" flex flex-col flex-1">
           <TaskList tasks={tasks} onDelete={handleTaskDeleted} />
 
-          {/* ✅ SIMPLE PAGINATION */}
-          <div className="mt-12 flex items-center justify-center gap-4">
-            {/* Previous Button */}
-            <button
-              onClick={() => setCurrentPage(currentPage - 1)}
-              disabled={currentPage === 1}
-              className={`px-4 py-2 rounded-lg transition ${
-                currentPage === 1
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  : "bg-indigo-600 text-white hover:bg-indigo-700"
-              }`}
-            >
-              ← Prev
-            </button>
+          {/* PAGINATION FOOTER */}
+          <div className="mt-auto pt-8">
+            {/* SIMPLE PAGINATION */}
+            <div className="flex items-center justify-center gap-4">
+              {/* Previous Button */}
+              <button
+                onClick={() => setCurrentPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                className={`px-4 py-2 rounded-lg transition ${
+                  currentPage === 1
+                    ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    : "bg-indigo-600 text-white hover:bg-indigo-700"
+                }`}
+              >
+                ← Prev
+              </button>
 
-            {/* Page Numbers */}
-            <div className="flex gap-2">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={`px-3 py-2 rounded-lg transition ${
-                      currentPage === page
-                        ? "bg-indigo-600 text-white"
-                        : "bg-gray-200 text-gray-700 hover:bg-indigo-100"
-                    }`}
-                  >
-                    {page}
-                  </button>
-                ),
-              )}
+              {/* Page Numbers */}
+              <div className="flex gap-2">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`px-3 py-2 rounded-lg transition ${
+                        currentPage === page
+                          ? "bg-indigo-600 text-white"
+                          : "bg-gray-200 text-gray-700 hover:bg-indigo-100"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ),
+                )}
+              </div>
+
+              {/* Next Button */}
+              <button
+                onClick={() => setCurrentPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className={`px-4 py-2 rounded-lg transition ${
+                  currentPage === totalPages
+                    ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    : "bg-indigo-600 text-white hover:bg-indigo-700"
+                }`}
+              >
+                Next →
+              </button>
             </div>
 
-            {/* Next Button */}
-            <button
-              onClick={() => setCurrentPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className={`px-4 py-2 rounded-lg transition ${
-                currentPage === totalPages
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  : "bg-indigo-600 text-white hover:bg-indigo-700"
-              }`}
-            >
-              Next →
-            </button>
+            {/* Page Info */}
+            <div className="text-center mt-4 text-gray-600 text-sm">
+              Page {currentPage} of {totalPages}
+            </div>
           </div>
-
-          {/* Page Info */}
-          <div className="text-center mt-4 text-gray-600 text-sm">
-            Page {currentPage} of {totalPages} • Total: {totalTasks} tasks
-          </div>
-        </>
+        </div>
       ) : (
         <div className="text-center py-12">
           <div className="text-4xl mb-4">📭</div>
