@@ -1,9 +1,11 @@
 import React from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import { useTheme } from "../../context/ThemeContext";
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -12,7 +14,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-indigo-600 text-white shadow-lg">
+    <nav className="bg-gray-700  text-white shadow-lg">
       <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo / Brand */}
         <Link to="/" className="text-xl font-bold">
@@ -35,13 +37,13 @@ const Navbar = () => {
               </Link>
 
               {/* User Info & Logout */}
-              <div className="flex items-center gap-4 border-l border-indigo-400 pl-4">
+              <div className="flex items-center gap-4 border-l gray-indigo-400 pl-4">
                 <span className="text-sm">
                   Hi, <strong>{user && user.name ? user.name : "User"}</strong>
                 </span>
                 <button
                   onClick={handleLogout}
-                  className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded transition"
+                  className="border border-gray-500 hover:bg-gray-600 px-4 py-2 rounded transition"
                 >
                   Logout
                 </button>
@@ -61,6 +63,13 @@ const Navbar = () => {
               </Link>
             </>
           )}
+          <button
+            onClick={toggleTheme}
+            className="text-xl hover:scale-110 transition"
+            title="Toggle theme"
+          >
+            {theme === "dark" ? "☀️" : "🌙"}
+          </button>
         </div>
       </div>
     </nav>

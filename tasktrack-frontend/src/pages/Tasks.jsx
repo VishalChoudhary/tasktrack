@@ -83,7 +83,9 @@ const Tasks = () => {
     <div className="max-w-6xl mx-auto px-4 py-8 min-h-screen flex flex-col">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">📋 My Tasks</h1>
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+          📋 My Tasks
+        </h1>
 
         <div className="flex items-center justify-between gap-4 mb-2">
           {/* Filter Buttons */}
@@ -203,7 +205,7 @@ const Tasks = () => {
             </div>
 
             {/* Page Info */}
-            <div className="text-center mt-4 text-gray-600 text-sm">
+            <div className="text-center mt-4 text-gray-600 dark:text-gray-200 text-sm">
               Page {currentPage} of {totalPages}
             </div>
           </div>

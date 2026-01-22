@@ -173,14 +173,14 @@ const TaskCard = ({ task, onTaskDeleted }) => {
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm hover:shadow-md transition flex flex-col">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-5 shadow-sm hover:shadow-md transition flex flex-col">
         {/* Title */}
-        <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-1">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2 line-clamp-1">
           {task.title}
         </h3>
 
         {/* Description */}
-        <p className="text-sm text-gray-600 mb-4 line-clamp-2 min-h-[40px]">
+        <p className="text-sm text-gray-600 dark:text-gray-200 mb-4 line-clamp-2 min-h-[40px]">
           {task.description || "No description"}
         </p>
 
@@ -209,8 +209,8 @@ const TaskCard = ({ task, onTaskDeleted }) => {
         </div>
 
         {/* Footer: Date + Action Buttons */}
-        <div className="flex items-center justify-between pt-4 border-t border-gray-200 mt-auto">
-          <span className="text-xs text-gray-500">
+        <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700 mt-auto">
+          <span className="text-xs text-gray-500 dark:text-gray-300">
             📅 {formatDate(task.dueDate)}
           </span>
 
@@ -271,7 +271,7 @@ const TaskCard = ({ task, onTaskDeleted }) => {
               : "max-h-0 opacity-0"
           }`}
         >
-          <div className="border-t border-gray-200">
+          <div className="border-t border-gray-200 dark:border-gray-700">
             {/* Add Subtask Form */}
             {showSubtaskForm ? (
               <SubtaskForm

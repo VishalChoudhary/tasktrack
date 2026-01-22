@@ -76,7 +76,7 @@ const Dashboard = () => {
   if (!stats) {
     return (
       <div className="max-w-6xl mx-auto px-4 py-8">
-        <p className="text-gray-600">No data available</p>
+        <p className="text-gray-600 dark:text-gray-200">No data available</p>
       </div>
     );
   }
@@ -85,10 +85,12 @@ const Dashboard = () => {
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">
           Welcome, {user?.name}! 👋
         </h1>
-        <p className="text-gray-600">Here's your task overview for today</p>
+        <p className="text-gray-600 dark:text-gray-400">
+          Here's your task overview for today
+        </p>
       </div>
 
       {/* Stats Grid - 4 Cards */}
@@ -102,7 +104,7 @@ const Dashboard = () => {
         <StatCard
           label="To Do"
           value={stats.todoCount || 0}
-          color="orange"
+          color="red"
           icon="📝"
         />
         <StatCard
@@ -120,45 +122,50 @@ const Dashboard = () => {
       </div>
 
       {/* Progress Section */}
-      <div className="bg-white rouded-lg shadow p-6 mb-8">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">
+      <div className="bg-white rounded-lg shadow p-6 mb-8 dark:bg-slate-900 dark:border dark:border-slate-700">
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-300 mb-4">
           Overall Completion
         </h2>
 
         {/* Progress Bar */}
         <div className="mb-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-600">Progress </span>
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+              Progress{" "}
+            </span>
             <span className="text-sm font-bold text-indigo-600">
               {stats.completionPercentage || 0}%
             </span>
           </div>
 
           {/* Bar itself */}
-          <div className="w-full bg-gray-200 h-3 rounded-full overflow-hidden">
+          <div className="w-full bg-gray-200 dark:bg-gray-700 h-3 rounded-full overflow-hidden">
             <div
-              className="bg-gradient-to-r from-green-400 to-green-600 h-3 rounded-full transition-all duration-500"
-              style={{
-                width: `${stats.completionPercentage || 0}%`,
-              }}
+              className="h-3 rounded-full bg-gradient-to-r from-green-500 to-green-700 dark:from-green-400 dark:to-green-500 transition-all duration-500 "
+              style={{ width: `${stats.completionPercentage || 0}%` }}
             />
           </div>
         </div>
 
         {/* Completion Text */}
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-600 dark:text-gray-300">
           {stats.doneCount} of {stats.totalTasks} tasks completed
         </p>
       </div>
 
       {/* Overdue Section */}
       {stats.overdueCount > 0 && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8">
-          <h3 className="text-lg font-semibold text-red-700 mb-2">
+        <div
+          className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8
+          dark:bg-gradient-to-br dark:from-purple-950/40 dark:to-gray-900
+    dark:border-purple-900/30 dark:text-red-900
+        "
+        >
+          <h3 className="text-lg font-semibold mb-2">
             ⚠️ {stats.overdueCount} Overdue Task
             {stats.overdueCount !== 1 ? "s" : ""}
           </h3>
-          <p className="text-red-600 text-sm">
+          <p className=" text-sm">
             You have {stats.overdueCount} task
             {stats.overdueCount !== 1 ? "s" : ""} that{" "}
             {stats.overdueCount !== 1 ? "are" : "is"} overdue. Please prioritize

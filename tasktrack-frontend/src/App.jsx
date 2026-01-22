@@ -9,6 +9,7 @@ import Tasks from "./pages/Tasks";
 import Navbar from "./components/Layout/Navbar";
 import CreateTask from "./pages/Tasks/CreateTask";
 import EditTask from "./pages/Tasks/EditTask";
+import { ThemeProvider } from "./context/ThemeContext";
 
 // Protected Route Component
 function ProtectedRoute({ children }) {
@@ -35,7 +36,7 @@ function ProtectedRoute({ children }) {
 
 function AppContent() {
   return (
-    <div className="">
+    <div className="min-h-screen bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
       {/* Navbar on all pages */}
       <Navbar />
 
@@ -90,7 +91,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <AppContent />
+        <ThemeProvider>
+          <AppContent />
+        </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>
   );
