@@ -79,6 +79,24 @@ const Tasks = () => {
     );
   }
 
+  //Error State
+  if (error) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-8 min-h-screen">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg">
+          <p className="font-medium mb-2">⚠️ Error</p>
+          <p className="mb-4">{error}</p>
+          <button
+            onClick={fetchTasks}
+            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 min-h-screen flex flex-col">
       {/* Header */}
@@ -121,23 +139,9 @@ const Tasks = () => {
         </div>
       </div>
 
-      {/* Error State */}
-      {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg mb-8">
-          <p className="font-medium mb-2">⚠️ Error</p>
-          <p className="mb-4">{error}</p>
-          <button
-            onClick={fetchTasks}
-            className="bg-red-600 hover:bg-red-800 text-white px-4 py-2 rounded transition"
-          >
-            Try Again
-          </button>
-        </div>
-      )}
-
       {/* Task Info */}
       {tasks.length > 0 && (
-        <div className="mb-6 text-gray-700">
+        <div className="mb-6 text-gray-700 dark:text-gray-300">
           <p>
             {filter !== "all" && (
               <span>
