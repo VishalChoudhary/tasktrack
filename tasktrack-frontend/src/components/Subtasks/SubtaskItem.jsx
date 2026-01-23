@@ -100,7 +100,7 @@ const SubtaskItem = ({ subtask, taskId, onToggle, onDelete, onEdit }) => {
   };
 
   return (
-    <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+    <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 dark:bg-gradient-to-r dark:from-slate-800 dark:to-slate-700 dark:hover:from-slate-700 dark:hover:to-slate-600 transition">
       {/* Checkbox */}
       <input
         type="checkbox"
@@ -117,7 +117,7 @@ const SubtaskItem = ({ subtask, taskId, onToggle, onDelete, onEdit }) => {
           type="text"
           value={editTitle}
           onChange={(e) => setEditTitle(e.target.value)}
-          className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:border-indigo-500"
+          className="flex-1 px-2 py-1 border border-gray-300 dark:bg-gray-900 dark:border-none rounded text-sm focus:outline-none focus:border-indigo-500"
           autoFocus
           maxLength="100"
           disabled={isSaving}
@@ -134,7 +134,7 @@ const SubtaskItem = ({ subtask, taskId, onToggle, onDelete, onEdit }) => {
           className={`flex-1 text-sm cursor-pointer select-none transition ${
             subtask.completed
               ? "line-through text-gray-400"
-              : "text-gray-800 hover:text-gray-600"
+              : "text-gray-800 dark:text-gray-200 hover:text-gray-600"
           }`}
           onClick={() => setIsEditing(true)}
           title="Click to Edit"
@@ -149,7 +149,7 @@ const SubtaskItem = ({ subtask, taskId, onToggle, onDelete, onEdit }) => {
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="text-green-600 hover:text-green-700 disabled:text-green-300 text-sm font-medium transition"
+            className="text-green-600 dark:text-green-400 hover:text-green-700 disabled:text-green-300 text-sm font-medium transition"
             title="Save"
           >
             ✓
@@ -159,7 +159,7 @@ const SubtaskItem = ({ subtask, taskId, onToggle, onDelete, onEdit }) => {
               setEditTitle(subtask.title);
               setIsEditing(false);
             }}
-            className="text-gray-600 hover:text-gray-700 text-sm font-medium transition"
+            className="text-red-600 hover:text-red-700 dark:text-red-650 text-sm font-medium transition"
             title="Cancel"
           >
             ✕

@@ -23,10 +23,12 @@ const SubtaskList = ({ subtasks, taskId, onToggle, onDelete, onEdit }) => {
       {/* Progress Bar */}
       <div className="space-y-1">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-gray-700">
+          <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
             Progress: {completedCount} of {subtasks.length}
           </span>
-          <span className="text-xs text-gray-500">{percentage}%</span>
+          <span className="text-xs text-gray-500 dark:text-gray-300">
+            {percentage}%
+          </span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
           <div
@@ -37,7 +39,7 @@ const SubtaskList = ({ subtasks, taskId, onToggle, onDelete, onEdit }) => {
       </div>
 
       {/* Subtask Items */}
-      <div>
+      <div className="flex flex-col gap-2">
         {safeSubtasks.map((subtask) => (
           <SubtaskItem
             key={subtask._id}

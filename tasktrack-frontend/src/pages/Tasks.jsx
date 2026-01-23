@@ -213,7 +213,7 @@ const Tasks = () => {
       ) : (
         <div className="text-center py-12">
           <div className="text-4xl mb-4">📭</div>
-          <h3 className="text-xl font-semibold text-gray-800 mb-2">
+          <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
             No tasks found
           </h3>
           <a

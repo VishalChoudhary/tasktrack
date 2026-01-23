@@ -173,7 +173,7 @@ const TaskCard = ({ task, onTaskDeleted }) => {
 
   return (
     <>
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-5 shadow-sm hover:shadow-md transition flex flex-col">
+      <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm hover:shadow-md transition flex flex-col cd /*Dark Mode - Subtle Vertical Gradient*/ dark:bg-gradient-to-b dark:from-[#202430] dark:to-[#161a23] dark:border-white/10">
         {/* Title */}
         <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2 line-clamp-1">
           {task.title}
@@ -234,7 +234,7 @@ const TaskCard = ({ task, onTaskDeleted }) => {
               }}
               className={`text-sm font-medium transition ${
                 expandSubtasks
-                  ? "text-purple-700 bg-purple-50 px-2 py-1 rounded"
+                  ? "text-purple-700 bg-purple-50 px-1 py-1 rounded"
                   : "text-purple-600 hover:text-purple-700"
               }`}
               title="View subtasks"

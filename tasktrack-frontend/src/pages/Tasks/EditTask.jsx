@@ -40,7 +40,7 @@ const EditTask = () => {
       await taskAPI.updateTask(id, formData);
 
       // Show success message
-      setSuccessMsg("✅ Task updated successfully!");
+      setSuccessMsg("Task updated successfully!");
 
       // Wait 1 second then redirect
       setTimeout(() => {
@@ -61,7 +61,7 @@ const EditTask = () => {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading task...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading task...</p>
         </div>
       </div>
     );
@@ -86,8 +86,12 @@ const EditTask = () => {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">✏️ Edit Task</h1>
-        <p className="text-gray-600 mt-2">Update the task details below</p>
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
+          Edit Task
+        </h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">
+          Update the task details below
+        </p>
       </div>
       {successMsg && (
         <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-6 py-4 rounded-lg">

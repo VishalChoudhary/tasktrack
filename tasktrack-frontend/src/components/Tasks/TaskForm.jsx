@@ -72,13 +72,17 @@ const TaskForm = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white rounded-lg shadow p-8 max-w-2xl"
+      className="
+    bg-white rounded-lg shadow p-8 max-w-2xl
+    dark:bg-gradient-to-br dark:from-slate-950/80 dark:to-slate-900
+    dark:border dark:border-white/10
+  "
     >
       {/* Title Field */}
       <div className="mb-6">
         <label
           htmlFor="title"
-          className="block text-sm font-medium' text-gray-700 mb-2"
+          className="block text-sm font-medium' text-gray-700 dark:text-gray-200 mb-2"
         >
           Task Title *
         </label>
@@ -89,17 +93,19 @@ const TaskForm = ({
           value={formData.title}
           onChange={handleChange}
           placeholder="Enter task title"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500 "
           required
         />
-        <p className="mt-1 text-xs text-gray-500">Min 3 characters</p>
+        <p className="mt-1 text-xs text-gray-500 dark:text-gray-200">
+          Min 3 characters
+        </p>
       </div>
 
       {/* Description Field */}
       <div className="mb-6">
         <label
           htmlFor="description"
-          className="block text-sm font-medium text-gray-700 mb-2"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2"
         >
           Description
         </label>
@@ -110,14 +116,16 @@ const TaskForm = ({
           onChange={handleChange}
           placeholder="Enter task description"
           rows="4"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500 "
         />
-        <p className="mt-1 px-4 text-xs text-gray-500">Max 500 characters</p>
+        <p className="mt-1 px-4 text-xs text-gray-500 dark:text-gray-300">
+          Max 500 characters
+        </p>
       </div>
 
       {/* Status Field */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-3">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-3">
           Status *
         </label>
         <div className="flex gap-4">
@@ -145,7 +153,7 @@ const TaskForm = ({
 
       {/* Priority Field */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-3">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-3">
           Priority *
         </label>
         <div className="flex gap-4">
@@ -175,7 +183,7 @@ const TaskForm = ({
       <div className="mb-6">
         <label
           htmlFor="dueDate"
-          className="block text-sm font-medium text-gray-700 mb-2"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2"
         >
           Due Date
         </label>
@@ -185,7 +193,7 @@ const TaskForm = ({
           name="dueDate"
           value={formData.dueDate}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500 "
         />
       </div>
 
