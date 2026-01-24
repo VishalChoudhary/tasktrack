@@ -62,106 +62,96 @@ const RegisterForm = () => {
   const displayError = formError || error;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2 text-center">
-          Create Account
-        </h2>
-        <p className="text-gray-600 text-center mb-6">Join us today</p>
+    <div className="w-full max-w-md rounded-2xl p-8 bg-slate-800/90 backdrop-blur-xl border border-white/10 shadow-2xl">
+      <h2 className="text-2xl font-bold text-white mb-2 text-center">
+        Create Account
+      </h2>
+      <p className="text-slate-300 text-center mb-6">Join us today</p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Name Input */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              Full Name
-            </label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your name"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              disabled={loading}
-            />
-          </div>
-
-          {/* Email Input */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              Email
-            </label>
-            <input
-              type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              disabled={loading}
-            />
-          </div>
-
-          {/* Password Input */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              disabled={loading}
-            />
-          </div>
-
-          {/* Confirm Password Input */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Enter your password"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              disabled={loading}
-            />
-          </div>
-
-          {/* Error Message */}
-          {displayError && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-              {displayError}
-            </div>
-          )}
-
-          {/* Submit Button */}
-          <button
-            type="submit"
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Name */}
+        <div>
+          <label className="block text-slate-300 font-medium mb-2">
+            Full Name
+          </label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter your name"
+            className="w-full px-4 py-2 rounded-lg bg-slate-800/70 border border-white/10 text-white placeholder-slate-400  focus:outline-none focus:ring-2 focus:ring-blue-500"
             disabled={loading}
-            className={`w-full py-2 px-4 rounded-lg font-medium text-white transition ${
-              loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800"
-            }`}
-          >
-            {loading ? "Creating account..." : "Create Account"}
-          </button>
-        </form>
+          />
+        </div>
 
-        {/* Link to Login */}
-        <p className="text-center text-gray-600 mt-6">
-          Already have an account?{""}
-          <Link
-            to="/login"
-            className="text-indigo-600 font-medium hover:underline"
-          >
-            Sign in
-          </Link>
-        </p>
-      </div>
+        {/* Email */}
+        <div>
+          <label className="block text-slate-300 font-medium mb-2">Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            className="w-full px-4 py-2 rounded-lg bg-slate-800/70 border border-white/10 text-white placeholder-slate-400  focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={loading}
+          />
+        </div>
+
+        {/* Password */}
+        <div>
+          <label className="block text-slate-300 font-medium mb-2">
+            Password
+          </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            className="w-full px-4 py-2 rounded-lg bg-slate-800/70 border border-white/10 text-white placeholder-slate-400  focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={loading}
+          />
+        </div>
+
+        {/* Confirm Password */}
+        <div>
+          <label className="block text-slate-300 font-medium mb-2">
+            Confirm Password
+          </label>
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirm your password"
+            className="w-full px-4 py-2 rounded-lg bg-slate-800/70 border border-white/10 text-white placeholder-slate-400  focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={loading}
+          />
+        </div>
+
+        {/* Error */}
+        {displayError && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            {displayError}
+          </div>
+        )}
+
+        {/* Button */}
+        <button
+          type="submit"
+          disabled={loading}
+          className={`w-full py-2 rounded-lg text-white font-medium ${
+            loading ? "bg-gray-400" : "bg-indigo-600 hover:bg-indigo-700"
+          }`}
+        >
+          {loading ? "Creating account..." : "Create Account"}
+        </button>
+      </form>
+
+      <p className="text-center text-slate-300 mt-6">
+        Already have an account?{" "}
+        <Link to="/login" className="text-blue-400 hover:underline">
+          Sign in
+        </Link>
+      </p>
     </div>
   );
 };

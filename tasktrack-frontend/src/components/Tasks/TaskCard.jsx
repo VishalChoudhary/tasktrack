@@ -173,7 +173,7 @@ const TaskCard = ({ task, onTaskDeleted }) => {
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm hover:shadow-md transition flex flex-col cd /*Dark Mode - Subtle Vertical Gradient*/ dark:bg-gradient-to-b dark:from-[#202430] dark:to-[#161a23] dark:border-white/10">
+      <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm hover:shadow-md transition flex flex-col dark:bg-[#1e293b] dark:border-white/10">
         {/* Title */}
         <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2 line-clamp-1">
           {task.title}
@@ -282,7 +282,7 @@ const TaskCard = ({ task, onTaskDeleted }) => {
             ) : (
               <button
                 onClick={() => setShowSubtaskForm(true)}
-                className="w-full mb-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-4 py-2 rounded-lg transition text-sm font-medium"
+                className="w-full mb-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-4 py-2 rounded-lg transition text-sm font-medium "
               >
                 ➕ Add Subtask
               </button>
@@ -290,7 +290,7 @@ const TaskCard = ({ task, onTaskDeleted }) => {
 
             {/* Subtasks List */}
             {subtasks.length === 0 ? (
-              <div className="text-center py-6 text-gray-500 text-sm">
+              <div className="text-center py-6 text-gray-500 dark:text-gray-300 text-sm">
                 📭 No subtasks yet. Add one to get started!
               </div>
             ) : (
