@@ -214,7 +214,7 @@ const TaskForm = ({ initialData = null, onSubmit, isLoading = false }) => {
           htmlFor="dueDate"
           className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2"
         >
-          Due Date (default: today)
+          Due Date
         </label>
         <input
           type="date"
