@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const TaskForm = ({
-  initialData = null,
-  onSubmit,
-  isLoading = false,
-  error = null,
-}) => {
+const TaskForm = ({ initialData = null, onSubmit, isLoading = false }) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -14,7 +9,9 @@ const TaskForm = ({
     dueDate: "",
   });
 
-  const [validationError, setValidationError] = useState("");
+  const [formError, setFormError] = useState("");
+  const TITLE_MAX = 100;
+  const DESC_MAX = 500;
 
   //Pre-fill form if editing
   useEffect(() => {
@@ -37,46 +34,70 @@ const TaskForm = ({
     }
   }, [initialData]);
 
+  useEffect(() => {
+    // Only for CREATE (no initialData)
+    if (!initialData) {
+      const today = new Date().toISOString().slice(0, 10);
+      setFormData((prev) => ({
+        ...prev,
+        dueDate: today,
+      }));
+    }
+  }, [initialData]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    setValidationError("");
+    setFormError("");
   };
 
   const validateForm = () => {
     if (!formData.title.trim()) {
-      setValidationError("Title is required");
+      setFormError("Title is required");
       return false;
     }
+
     if (formData.title.trim().length < 3) {
-      setValidationError("Title must be at least 3 characters");
+      setFormError("Title must be at least 3 characters");
       return false;
     }
-    if (formData.description && formData.description.length > 500) {
-      setValidationError("Description must be less than 500 characters");
+
+    if (formData.title.length > TITLE_MAX) {
+      setFormError("Title cannot exceed 100 characters");
       return false;
     }
+
+    if (formData.description && formData.description.length > DESC_MAX) {
+      setFormError("Description must be less than 500 characters");
+      return false;
+    }
+
+    if (!formData.dueDate) {
+      setFormError("Due date is required");
+      return false;
+    }
+
     return true;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateForm()) {
+    if (!validateForm()) return;
+
+    try {
       onSubmit(formData);
+    } catch (err) {
+      setFormError(err?.message || "Failed to create task");
     }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="
-    bg-white rounded-lg shadow p-8 max-w-2xl
-    dark:bg-gradient-to-br dark:from-slate-950/80 dark:to-slate-900
-    dark:border dark:border-white/10
-  "
+      className="bg-white rounded-lg shadow p-8 max-w-2xl dark:bg-gradient-to-br dark:from-slate-950/80 dark:to-slate-900    dark:border dark:border-white/10 "
     >
       {/* Title Field */}
       <div className="mb-6">
@@ -93,11 +114,14 @@ const TaskForm = ({
           value={formData.title}
           onChange={handleChange}
           placeholder="Enter task title"
-          className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500 "
-          required
+          maxLength={TITLE_MAX}
+          className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100"
         />
-        <p className="mt-1 text-xs text-gray-500 dark:text-gray-200">
-          Min 3 characters
+        <p className="mt-1 text-xs text-gray-500 dark:text-gray-300 flex justify-between">
+          <span>Min 3 characters</span>
+          <span>
+            {formData.title.length}/{TITLE_MAX}
+          </span>
         </p>
       </div>
 
@@ -115,11 +139,16 @@ const TaskForm = ({
           value={formData.description}
           onChange={handleChange}
           placeholder="Enter task description"
-          rows="4"
-          className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500 "
+          rows={4}
+          maxLength={DESC_MAX}
+          className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500
+        dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 resize-none overflow-y-auto"
         />
         <p className="mt-1 px-4 text-xs text-gray-500 dark:text-gray-300">
           Max 500 characters
+        </p>
+        <p className="mt-1 text-xs text-gray-500 dark:text-gray-300 text-right">
+          {formData.description.length}/{DESC_MAX}
         </p>
       </div>
 
@@ -185,7 +214,7 @@ const TaskForm = ({
           htmlFor="dueDate"
           className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2"
         >
-          Due Date
+          Due Date (default: today)
         </label>
         <input
           type="date"
@@ -197,17 +226,10 @@ const TaskForm = ({
         />
       </div>
 
-      {/* Validation Error */}
-      {validationError && (
-        <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-          {validationError}
-        </div>
-      )}
-
-      {/* API Error */}
-      {error && (
-        <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-          {error}
+      {/* Error & Validation */}
+      {formError && (
+        <div className="mb-6 text-center bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+          {formError}
         </div>
       )}
 
