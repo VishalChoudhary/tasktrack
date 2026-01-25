@@ -14,17 +14,21 @@ const app = express();
 connectDB(); //Connecting to MongoDB
 
 //Middleware Setup
-
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // cors setup
 app.use(
   cors({
-    origin: "http://localhost:5173", // frontend
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:3000",
+      process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : [],
+    ].flat(),
     credentials: true,
-  })
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
 );
 
 //Test Route (verify server is running)
