@@ -100,7 +100,7 @@ const SubtaskItem = ({ subtask, taskId, onToggle, onDelete, onEdit }) => {
   };
 
   return (
-    <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 dark:bg-gradient-to-r dark:from-slate-800 dark:to-slate-700 dark:hover:from-slate-700 dark:hover:to-slate-600 transition">
+    <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 dark:bg-gradient-to-r dark:from-slate-800 dark:to-slate-700">
       {/* Checkbox */}
       <input
         type="checkbox"
@@ -113,31 +113,51 @@ const SubtaskItem = ({ subtask, taskId, onToggle, onDelete, onEdit }) => {
 
       {/* Title - Editable */}
       {isEditing ? (
-        <input
-          type="text"
-          value={editTitle}
-          onChange={(e) => setEditTitle(e.target.value)}
-          className="flex-1 px-2 py-1 border border-gray-300 dark:bg-gray-900 dark:border-none rounded text-sm focus:outline-none focus:border-indigo-500"
-          autoFocus
-          maxLength="100"
-          disabled={isSaving}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleSave();
-            if (e.key === "Escape") {
-              setEditTitle(subtask.title);
-              setIsEditing(false);
-            }
-          }}
-        />
+        <div className="flex-1">
+          <textarea
+            value={editTitle}
+            onChange={(e) => setEditTitle(e.target.value)}
+            rows={2}
+            maxLength={100}
+            autoFocus
+            disabled={isSaving}
+            className="
+      w-full resize-none text-sm px-2 py-1
+      border-none rounded
+      focus:outline-none
+      leading-5
+      dark:bg-gradient-to-r dark:from-slate-800 dark:to-slate-700
+      text-gray-800 dark:text-gray-200
+    "
+            onKeyDown={(e) => {
+              if (e.key === "Escape") {
+                setEditTitle(subtask.title);
+                setIsEditing(false);
+              }
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSave();
+              }
+            }}
+          />
+
+          {/* Optional near-limit counter */}
+          {editTitle.length >= 80 && (
+            <p className="text-xs text-gray-400 mt-1 text-right">
+              {editTitle.length}/100
+            </p>
+          )}
+        </div>
       ) : (
         <span
-          className={`flex-1 text-sm cursor-pointer select-none transition ${
-            subtask.completed
-              ? "line-through text-gray-400"
-              : "text-gray-800 dark:text-gray-200 hover:text-gray-600"
-          }`}
-          onClick={() => setIsEditing(true)}
-          title="Click to Edit"
+          className={`flex-1 text-sm select-none transition 
+            break-words
+            line-clamp-2
+            ${
+              subtask.completed
+                ? "line-through text-gray-400"
+                : "text-gray-800 dark:text-gray-200"
+            }`}
         >
           {subtask.title}
         </span>
@@ -145,26 +165,52 @@ const SubtaskItem = ({ subtask, taskId, onToggle, onDelete, onEdit }) => {
 
       {/* Action Buttons */}
       {isEditing ? (
-        <>
+        <div className="flex items-center gap-2">
+          {/* SAVE BUTTON */}
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="text-green-600 dark:text-green-400 hover:text-green-700 disabled:text-green-300 text-sm font-medium transition"
+            className="p-1 rounded bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-green-900/50 transition"
             title="Save"
           >
-            ✓
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
           </button>
+
+          {/* CANCEL BUTTON */}
           <button
             onClick={() => {
               setEditTitle(subtask.title);
               setIsEditing(false);
             }}
-            className="text-red-600 hover:text-red-700 dark:text-red-650 text-sm font-medium transition"
+            className="p-1 rounded bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 transition"
             title="Cancel"
           >
-            ✕
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
           </button>
-        </>
+        </div>
       ) : (
         <>
           <button
